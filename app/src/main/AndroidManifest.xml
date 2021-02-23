@@ -15,7 +15,9 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name=".RecordService"/>
+            android:name=".RecordService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

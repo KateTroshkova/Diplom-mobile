@@ -23,6 +23,7 @@ class RecordService : Service() {
     private var virtualDisplay: VirtualDisplay? = null
     private var imageReader: ImageReader? = null
     private var timer: Disposable? = null
+    private val notificationDelegate by lazy { NotificationDelegate() }
 
     private var height = 1080
     private var width = 720
@@ -42,9 +43,23 @@ class RecordService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        measureScreen()
-        mirror()
-        return super.onStartCommand(intent, flags, startId)
+        if (intent?.action == MainActivity.RECORD_START_KEY) {
+            measureScreen()
+            mirror()
+            val notification = notificationDelegate.createNotification(
+                this,
+                CHANNEL_ID,
+                "foregroundRecord",
+                "foregroundRecord",
+                "recording..."
+            )
+            startForeground(1, notification)
+        }
+        if (intent?.action == MainActivity.RECORD_STOP_KEY) {
+            stopForeground(true)
+            stopSelfResult(startId)
+        }
+        return START_NOT_STICKY;
     }
 
     override fun onDestroy() {
@@ -84,12 +99,7 @@ class RecordService : Service() {
             ?: return false
     }
 
-    private fun getScreenshot(): Bitmap {
-        return makeScreenshot() ?: getScreenshot()
-    }
-
     private fun initImageReader() {
-        imageReader = null
         imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, MAX_IMAGES)
         crateImageVirtualDisplay()
     }
@@ -127,28 +137,25 @@ class RecordService : Service() {
     }
 
     private fun makeScreenshot(): Bitmap? {
-        try {
-            val image = imageReader?.acquireLatestImage()
-            return image?.let {
-                val width = image.width
-                val height = image.height
-                val planes = image.planes
-                val buffer = planes[0].buffer
-                val pixelStride = planes[0].pixelStride
-                val rowStride = planes[0].rowStride
-                val rowPadding = rowStride - pixelStride * width
-                val bitmap = Bitmap.createBitmap(
-                    width + rowPadding / pixelStride,
-                    height,
-                    Bitmap.Config.ARGB_8888
-                )
-                bitmap.copyPixelsFromBuffer(buffer)
-                Bitmap.createBitmap(bitmap, 0, 0, width, height)
-            }
-        } catch (e: IllegalStateException) {
-            initImageReader()
-            return null
+        val image = imageReader?.acquireLatestImage()
+        val bitmap = image?.let {
+            val width = image.width
+            val height = image.height
+            val planes = image.planes
+            val buffer = planes[0].buffer
+            val pixelStride = planes[0].pixelStride
+            val rowStride = planes[0].rowStride
+            val rowPadding = rowStride - pixelStride * width
+            val bitmap = Bitmap.createBitmap(
+                width + rowPadding / pixelStride,
+                height,
+                Bitmap.Config.ARGB_8888
+            )
+            bitmap.copyPixelsFromBuffer(buffer)
+            Bitmap.createBitmap(bitmap, 0, 0, width, height)
         }
+        image?.close()
+        return bitmap
     }
 
     private fun measureScreen() {
@@ -163,8 +170,8 @@ class RecordService : Service() {
             .repeat()
             .subscribeOn(Schedulers.newThread())
             .subscribe {
-                val bitmap = getScreenshot()
-                saveImage(applicationContext, bitmap)
+                val bitmap = makeScreenshot()
+                bitmap?.let { it1 -> saveImage(applicationContext, it1) }
             }
     }
 
@@ -175,8 +182,9 @@ class RecordService : Service() {
 
     private companion object {
         private const val SCREENSHOT_DELAY = 1L
-        private const val MAX_IMAGES = 10
+        private const val MAX_IMAGES = 5
         private const val ENCODE_BIT_RATE = 5 * 1024 * 1024
         private const val FRAME_RATE = 30
+        private const val CHANNEL_ID = "ForegroundScreenRecordingChannel"
     }
 }

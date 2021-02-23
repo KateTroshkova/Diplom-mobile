@@ -38,10 +38,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         stopButton.setOnClickListener {
-            // recordService?.stopRecord()
             try {
                 unbindService(connection)
-                stopService(Intent(this, RecordService::class.java))
+                val intent = Intent(this, RecordService::class.java)
+                intent.action = RECORD_STOP_KEY
+                startService(intent)
             } catch (e: Throwable) {
                 e.printStackTrace()
             }
@@ -54,7 +55,9 @@ class MainActivity : AppCompatActivity() {
         if (requestCode != MEDIA_PROJECTION_CODE) return
         if (resultCode == Activity.RESULT_OK) {
             if (data == null) return
-            startService(Intent(this, RecordService::class.java))
+            val intent = Intent(this, RecordService::class.java)
+            intent.action = RECORD_START_KEY
+            startService(intent)
             projection = permissionDelegate.buildMediaProjection(resultCode, data)
             bindService(
                 Intent(this, RecordService::class.java),
@@ -98,5 +101,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val MEDIA_PROJECTION_CODE = 1001
         const val PERMISSION_CODE = 1002
+        const val RECORD_START_KEY = "1003"
+        const val RECORD_STOP_KEY = "1004"
     }
 }
