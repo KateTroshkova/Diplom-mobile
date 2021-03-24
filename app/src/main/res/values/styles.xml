@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Button">
+        <item name="android:background">@drawable/shape_rect_white</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:elevation">8dp</item>
+    </style>
+
 </resources>
