@@ -6,27 +6,24 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.content.pm.PackageManager
 import android.media.projection.MediaProjection
 import android.os.Bundle
 import android.os.IBinder
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_main.*
+import moxy.MvpAppCompatActivity
+import moxy.presenter.InjectPresenter
+import moxy.presenter.ProvidePresenter
 import nstu.avt716.etroshkova.diplom.R
 import nstu.avt716.etroshkova.diplom.presentation.delegate.PermissionDelegate
 import nstu.avt716.etroshkova.diplom.presentation.delegate.ToastDelegate
 import nstu.avt716.etroshkova.diplom.presentation.service.RecordService
+import toothpick.Toothpick
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MvpAppCompatActivity(), MainView {
 
     private val permissionDelegate by lazy { PermissionDelegate(this) }
 
-    private val toastDelegate by lazy {
-        ToastDelegate(
-            this
-        )
-    }
+    private val toastDelegate by lazy { ToastDelegate(this) }
 
     private var projection: MediaProjection? = null
     private var recordService: RecordService? = null
@@ -42,41 +39,39 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private val permissions by lazy {
+        arrayOf(
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+    }
+
+    @InjectPresenter
+    lateinit var presenter: MainPresenter
+
+    @ProvidePresenter
+    fun providePresenter(): MainPresenter =
+        Toothpick.openScopes("App").getInstance(MainPresenter::class.java)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         stopButton.setOnClickListener {
-            try {
-                unbindService(connection)
-                val intent = Intent(this, RecordService::class.java)
-                intent.action = RECORD_STOP_KEY
-                startService(intent)
-            } catch (e: Throwable) {
-                e.printStackTrace()
-            }
+            presenter.disconnect()
         }
         usbConnectButton.setOnClickListener {
-            requestPermissions()
+            presenter.handleUsbConnection()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != MEDIA_PROJECTION_CODE) return
+        if (requestCode != PermissionDelegate.MEDIA_PROJECTION_CODE) return
         if (resultCode == Activity.RESULT_OK) {
             if (data == null) return
-            val intent = Intent(this, RecordService::class.java)
-            intent.action = RECORD_START_KEY
-            startService(intent)
-            projection = permissionDelegate.buildMediaProjection(resultCode, data)
-            bindService(
-                Intent(this, RecordService::class.java),
-                connection,
-                Context.BIND_AUTO_CREATE
-            )
-            toastDelegate.showToast(R.string.record_start)
+            presenter.notifyScreenProjectionGranted(resultCode, data)
         } else {
-            toastDelegate.showToast(R.string.error_permission_denied)
+            presenter.notifyScreenProjectionDenied()
         }
     }
 
@@ -86,31 +81,51 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                grantResults[1] == PackageManager.PERMISSION_GRANTED
-            ) {
-                permissionDelegate.requestMediaProjection(MEDIA_PROJECTION_CODE)
+        if (requestCode == PermissionDelegate.PERMISSION_CODE) {
+            if (permissionDelegate.isPermissionsGranted(grantResults)) {
+                presenter.notifyPermissionsGranted()
             } else {
-                toastDelegate.showToast(R.string.error_permission_denied)
+                presenter.notifyPermissionDenied()
             }
         }
     }
 
-    private fun requestPermissions() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                Manifest.permission.RECORD_AUDIO,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ),
-            PERMISSION_CODE
+    override fun requestPermissions() {
+        permissionDelegate.requestPermissions(permissions)
+    }
+
+    override fun requestScreenProjection() {
+        permissionDelegate.requestMediaProjection()
+    }
+
+    override fun showError(error: Int) {
+        toastDelegate.showToast(error)
+    }
+
+    override fun startService(resultCode: Int, data: Intent) {
+        val intent = Intent(this, RecordService::class.java)
+        intent.action = RECORD_START_KEY
+        startService(intent)
+        projection = permissionDelegate.buildMediaProjection(resultCode, data)
+        bindService(
+            Intent(this, RecordService::class.java),
+            connection,
+            Context.BIND_AUTO_CREATE
         )
     }
 
+    override fun stopService() {
+        try {
+            unbindService(connection)
+            val intent = Intent(this, RecordService::class.java)
+            intent.action = RECORD_STOP_KEY
+            startService(intent)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+
     companion object {
-        const val MEDIA_PROJECTION_CODE = 1001
-        const val PERMISSION_CODE = 1002
         const val RECORD_START_KEY = "1003"
         const val RECORD_STOP_KEY = "1004"
     }
