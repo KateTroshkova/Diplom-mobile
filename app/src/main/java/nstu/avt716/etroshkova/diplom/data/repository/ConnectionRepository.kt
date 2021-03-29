@@ -6,7 +6,10 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import nstu.avt716.etroshkova.diplom.data.connection.ConnectionSourceFactory
 import nstu.avt716.etroshkova.diplom.domain.api.ConnectionRepositoryApi
-import nstu.avt716.etroshkova.diplom.domain.common.*
+import nstu.avt716.etroshkova.diplom.domain.common.deleteFile
+import nstu.avt716.etroshkova.diplom.domain.common.diplomPath
+import nstu.avt716.etroshkova.diplom.domain.common.textFileName
+import nstu.avt716.etroshkova.diplom.domain.common.writeTextFile
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -39,7 +42,7 @@ class ConnectionRepository @Inject constructor() : ConnectionRepositoryApi {
 
     private fun deleteScreenshots() {
         for (i in 0..20) {
-            deleteFile(File("$galleryPath/screenshot$i.jpg"))
+            deleteFile(File("$diplomPath/screenshot$i.jpg"))
         }
     }
 }

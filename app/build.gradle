@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "nstu.avt716.etroshkova.diplom"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 

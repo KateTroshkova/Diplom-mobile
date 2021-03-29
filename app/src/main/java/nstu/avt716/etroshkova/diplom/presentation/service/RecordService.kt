@@ -170,8 +170,7 @@ class RecordService : Service() {
     }
 
     private fun mirror() {
-        timer = Observable.timer(SCREENSHOT_DELAY, TimeUnit.MILLISECONDS)
-            .repeat()
+        timer = Observable.interval(SCREENSHOT_DELAY, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.newThread())
             .subscribe {
                 val bitmap = makeScreenshot()
@@ -190,7 +189,7 @@ class RecordService : Service() {
     }
 
     private companion object {
-        private const val SCREENSHOT_DELAY = 30L
+        private const val SCREENSHOT_DELAY = 40L
         private const val MAX_IMAGES = 5
         private const val ENCODE_BIT_RATE = 5 * 1024 * 1024
         private const val FRAME_RATE = 30
