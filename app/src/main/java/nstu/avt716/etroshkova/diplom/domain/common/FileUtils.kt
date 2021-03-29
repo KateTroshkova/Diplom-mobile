@@ -7,9 +7,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
+import java.io.*
 
 var imageIndex: Int = 0
 
@@ -18,9 +16,14 @@ fun imageFileName(n: Int): String = "screenshot$n.jpg"
 val videoFileName: String
     get() = "record1.mp4"
 
+val textFileName: String
+    get() = "mobile_info.txt"
+
 val galleryPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
 
-val videoPath = "$galleryPath$videoFileName"
+val diplomPath = galleryPath.absolutePath.toString() + "/diplom"
+
+val videoPath = "$galleryPath/$videoFileName"
 
 @RequiresApi(Build.VERSION_CODES.Q)
 fun videoUri(context: Context) = context.contentResolver.let { resolver ->
@@ -67,5 +70,27 @@ fun saveImage(context: Context, bitmap: Bitmap) {
     }
     fos?.use {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+    }
+}
+
+fun writeTextFile(content: String) {
+    val dir = File(diplomPath)
+    dir.mkdirs()
+    val file = File(dir, textFileName)
+    try {
+        val pw = PrintWriter(FileOutputStream(file))
+        pw.println(content)
+        pw.flush()
+        pw.close()
+    } catch (e: FileNotFoundException) {
+        e.printStackTrace()
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+}
+
+fun deleteFile(dir: File) {
+    if (dir.exists()) {
+        dir.delete()
     }
 }
