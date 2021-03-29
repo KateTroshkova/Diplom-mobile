@@ -21,9 +21,9 @@ val textFileName: String
 
 val galleryPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
 
-val diplomPath = galleryPath.absolutePath.toString() + "/diplom"
+val diplomPath = "${galleryPath.absolutePath}/diplom"
 
-val videoPath = "$galleryPath/$videoFileName"
+val videoPath = "$diplomPath/$videoFileName"
 
 @RequiresApi(Build.VERSION_CODES.Q)
 fun videoUri(context: Context) = context.contentResolver.let { resolver ->
@@ -52,6 +52,8 @@ fun imageUri(context: Context) = context.contentResolver.let { resolver ->
 }
 
 fun saveImage(context: Context, bitmap: Bitmap) {
+    val dir = File(diplomPath)
+    dir.mkdirs()
     imageIndex++
     if (imageIndex == 20) {
         imageIndex = 0
@@ -63,7 +65,7 @@ fun saveImage(context: Context, bitmap: Bitmap) {
     } else {
         FileOutputStream(
             File(
-                galleryPath,
+                diplomPath,
                 imageFileName(imageIndex)
             )
         )
