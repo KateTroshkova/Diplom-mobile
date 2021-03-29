@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Диплом-клиент</string>
+    <string name="label_usb">USB</string>
+    <string name="label_wifi">WIFI</string>
+    <string name="label_ip">IP</string>
+    <string name="label_send_file">Отправить файл</string>
+    <string name="label_stop_mirror">Закончить трансляцию</string>
+    <string name="settings_audio">Разрешить приложению записывать звук</string>
+    <string name="settings_video">Сохранить видео после трансляции</string>
+    <string name="record_stop">Закочить трансляцию</string>
+    <string name="record_start">Запись экрана началась</string>
+    <string name="error_permission_denied">Приложению нужны разрешения для дальнейшей работы!</string>
+    <string name="error_connection">Невозможно установить соединение</string>
+</resources>

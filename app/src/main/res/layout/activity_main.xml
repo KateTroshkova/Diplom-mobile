@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Диплом-клиент"
+                android:text="@string/app_name"
                 android:textColor="#ffffff"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -37,7 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="USB"
+        android:text="@string/label_usb"
         app:layout_constraintEnd_toStartOf="@id/wifiConnectButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBar" />
@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Wifi"
+        android:text="@string/label_wifi"
         app:layout_constraintEnd_toStartOf="@id/ipConnectButton"
         app:layout_constraintStart_toEndOf="@id/usbConnectButton"
         app:layout_constraintTop_toBottomOf="@id/appBar" />
@@ -59,7 +59,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="IP"
+        android:text="@string/label_ip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/wifiConnectButton"
         app:layout_constraintTop_toBottomOf="@id/appBar" />
@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="Отправить файл"
+        android:text="@string/label_send_file"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/usbConnectButton" />
@@ -87,7 +87,7 @@
         android:id="@+id/audioCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Разрешить приложению записывать звук"
+        android:text="@string/settings_audio"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +97,7 @@
         android:id="@+id/videoCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Сохранить видео после трансляции"
+        android:text="@string/settings_video"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +109,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Закончить трансляцию"
+        android:text="@string/label_stop_mirror"
         android:layout_marginBottom="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

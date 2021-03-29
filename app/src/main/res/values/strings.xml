@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">diplom</string>
+    <string name="label_usb">USB</string>
+    <string name="label_wifi">WIFI</string>
+    <string name="label_ip">IP</string>
+    <string name="label_send_file">Send file</string>
+    <string name="label_stop_mirror">Stop mirror</string>
+    <string name="settings_audio">Allow the app to record audio</string>
+    <string name="settings_video">Save video</string>
     <string name="record_stop">Stop recording</string>
     <string name="record_start">Screen recording start</string>
     <string name="error_permission_denied">We need your permission to continue work!</string>
