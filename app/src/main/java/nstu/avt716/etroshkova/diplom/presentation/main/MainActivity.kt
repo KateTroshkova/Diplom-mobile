@@ -9,6 +9,7 @@ import android.content.ServiceConnection
 import android.media.projection.MediaProjection
 import android.os.Bundle
 import android.os.IBinder
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
@@ -39,10 +40,18 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     }
 
-    private val permissions by lazy {
+    private val usbPermissions by lazy {
         arrayOf(
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+    }
+
+    private val wifiPermissions by lazy {
+        arrayOf(
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_WIFI_STATE
         )
     }
 
@@ -58,10 +67,19 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         setContentView(R.layout.activity_main)
         stopButton.setOnClickListener {
             presenter.disconnect()
+            wifiTextView.text = ""
         }
         usbConnectButton.setOnClickListener {
             presenter.handleUsbConnection()
         }
+        wifiConnectButton.setOnClickListener {
+            presenter.handleIPConnection()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        observeState()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,8 +108,12 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         }
     }
 
-    override fun requestPermissions() {
-        permissionDelegate.requestPermissions(permissions)
+    override fun requestUSBPermissions() {
+        permissionDelegate.requestPermissions(usbPermissions)
+    }
+
+    override fun requestWifiPermissions() {
+        permissionDelegate.requestPermissions(wifiPermissions)
     }
 
     override fun requestScreenProjection() {
@@ -124,6 +146,15 @@ class MainActivity : MvpAppCompatActivity(), MainView {
             e.printStackTrace()
         }
     }
+
+    private fun observeState() {
+        presenter.wifiData.observe(this, wifiObserver)
+    }
+
+    private val wifiObserver
+        get() = Observer<String> {
+            wifiTextView.text = it
+        }
 
     companion object {
         const val RECORD_START_KEY = "1003"

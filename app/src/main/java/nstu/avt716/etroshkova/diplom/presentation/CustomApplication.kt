@@ -20,7 +20,7 @@ class CustomApplication : Application() {
             exitProcess(0)
         }
         val appScope = Toothpick.openScope("App")
-        appScope.installModules(Injector())
+        appScope.installModules(Injector(applicationContext))
         Toothpick.inject(this, appScope)
         MvpFacade.init()
     }

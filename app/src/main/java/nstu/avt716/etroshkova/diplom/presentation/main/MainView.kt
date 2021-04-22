@@ -13,7 +13,10 @@ interface MainView : MvpView {
     fun stopService()
 
     @OneExecution
-    fun requestPermissions()
+    fun requestUSBPermissions()
+
+    @OneExecution
+    fun requestWifiPermissions()
 
     @OneExecution
     fun requestScreenProjection()

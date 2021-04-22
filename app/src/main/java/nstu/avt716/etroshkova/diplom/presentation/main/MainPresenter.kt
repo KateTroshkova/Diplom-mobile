@@ -1,6 +1,8 @@
 package nstu.avt716.etroshkova.diplom.presentation.main
 
 import android.content.Intent
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -15,6 +17,8 @@ class MainPresenter @Inject constructor(
 
     private var isPermissionsGranted = false
     private var disposables = mutableListOf<Disposable>()
+    private val wifiDataLD: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    val wifiData: LiveData<String> by lazy { wifiDataLD }
 
     override fun destroyView(view: MainView?) {
         super.destroyView(view)
@@ -24,7 +28,21 @@ class MainPresenter @Inject constructor(
     }
 
     fun handleUsbConnection() {
-        viewState.requestPermissions()
+        viewState.requestUSBPermissions()
+    }
+
+    fun handleIPConnection() {
+        viewState.requestWifiPermissions()
+        disposables.add(
+            connection
+                .getConnectedWifiIp()
+                .subscribe(
+                    {
+                        wifiDataLD.value = it
+                    },
+                    { viewState.showError(R.string.error_wifi) }
+                )
+        )
     }
 
     fun notifyScreenProjectionGranted(resultCode: Int, data: Intent) {

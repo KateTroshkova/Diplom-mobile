@@ -11,4 +11,5 @@
     <string name="record_start">Screen recording start</string>
     <string name="error_permission_denied">We need your permission to continue work!</string>
     <string name="error_connection">Can not connect to desktop</string>
+    <string name="error_wifi">WiFi not found</string>
 </resources>
