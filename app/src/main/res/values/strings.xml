@@ -12,4 +12,5 @@
     <string name="error_permission_denied">We need your permission to continue work!</string>
     <string name="error_connection">Can not connect to desktop</string>
     <string name="error_wifi">WiFi not found</string>
+    <string name="info_wifi">Connection address: %1$s</string>
 </resources>

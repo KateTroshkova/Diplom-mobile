@@ -155,7 +155,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     private val wifiObserver
         get() = Observer<String> {
-            wifiTextView.text = it
+            wifiTextView.text = getString(R.string.info_wifi, it)
         }
 
     private val loadingObserver

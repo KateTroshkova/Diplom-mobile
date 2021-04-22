@@ -13,4 +13,5 @@
     <string name="error_permission_denied">Приложению нужны разрешения для дальнейшей работы!</string>
     <string name="error_connection">Невозможно установить соединение</string>
     <string name="error_wifi">Не найдена сеть WiFi</string>
+    <string name="info_wifi">Адрес для подключения: %1$s</string>
 </resources>
