@@ -18,7 +18,9 @@ class MainPresenter @Inject constructor(
     private var isPermissionsGranted = false
     private var disposables = mutableListOf<Disposable>()
     private val wifiDataLD: MutableLiveData<String> by lazy { MutableLiveData<String>() }
+    private val loadingStateLD: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val wifiData: LiveData<String> by lazy { wifiDataLD }
+    val loadingState: LiveData<Boolean> by lazy { loadingStateLD }
 
     override fun destroyView(view: MainView?) {
         super.destroyView(view)
@@ -36,6 +38,8 @@ class MainPresenter @Inject constructor(
         disposables.add(
             connection
                 .getConnectedWifiIp()
+                .doOnSubscribe { loadingStateLD.value = true }
+                .doFinally { loadingStateLD.value = false }
                 .subscribe(
                     {
                         wifiDataLD.value = it
@@ -51,6 +55,8 @@ class MainPresenter @Inject constructor(
         disposables.add(
             connection
                 .connect()
+                .doOnSubscribe { loadingStateLD.value = true }
+                .doFinally { loadingStateLD.value = false }
                 .subscribe(
                     {},
                     { viewState.showError(R.string.error_connection) }
@@ -67,6 +73,8 @@ class MainPresenter @Inject constructor(
         disposables.add(
             connection
                 .disconnect()
+                .doOnSubscribe { loadingStateLD.value = true }
+                .doFinally { loadingStateLD.value = false }
                 .subscribe(
                     {},
                     { viewState.showError(R.string.error_connection) }

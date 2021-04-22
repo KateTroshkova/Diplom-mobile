@@ -9,6 +9,7 @@ import android.content.ServiceConnection
 import android.media.projection.MediaProjection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
@@ -149,11 +150,17 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     private fun observeState() {
         presenter.wifiData.observe(this, wifiObserver)
+        presenter.loadingState.observe(this, loadingObserver)
     }
 
     private val wifiObserver
         get() = Observer<String> {
             wifiTextView.text = it
+        }
+
+    private val loadingObserver
+        get() = Observer<Boolean> {
+            loadingView.visibility = if (it) View.VISIBLE else View.GONE
         }
 
     companion object {
