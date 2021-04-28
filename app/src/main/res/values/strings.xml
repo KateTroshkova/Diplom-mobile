@@ -5,6 +5,7 @@
     <string name="label_ip">IP</string>
     <string name="label_send_file">Send file</string>
     <string name="label_stop_mirror">Stop mirror</string>
+    <string name="label_settings">Information</string>
     <string name="settings_audio">Allow the app to record audio</string>
     <string name="settings_video">Save video</string>
     <string name="record_stop">Stop recording</string>
@@ -13,4 +14,10 @@
     <string name="error_connection">Can not connect to desktop</string>
     <string name="error_wifi">WiFi not found</string>
     <string name="info_wifi">Connection address: %1$s</string>
+    <string name="title_activity_information">InformationActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 </resources>

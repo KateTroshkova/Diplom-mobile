@@ -6,6 +6,7 @@
     <string name="label_ip">IP</string>
     <string name="label_send_file">Отправить файл</string>
     <string name="label_stop_mirror">Закончить трансляцию</string>
+    <string name="label_settings">Как подключиться</string>
     <string name="settings_audio">Разрешить приложению записывать звук</string>
     <string name="settings_video">Сохранить видео после трансляции</string>
     <string name="record_stop">Закочить трансляцию</string>

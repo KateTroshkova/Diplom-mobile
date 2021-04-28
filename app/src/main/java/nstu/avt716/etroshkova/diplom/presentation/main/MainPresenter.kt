@@ -9,6 +9,7 @@ import moxy.MvpPresenter
 import nstu.avt716.etroshkova.diplom.R
 import nstu.avt716.etroshkova.diplom.domain.interactor.ConnectionInteractor
 import nstu.avt716.etroshkova.diplom.domain.interactor.PreferencesInteractor
+import nstu.avt716.etroshkova.diplom.presentation.common.SingleLiveData
 import javax.inject.Inject
 
 @InjectViewState
@@ -21,8 +22,10 @@ class MainPresenter @Inject constructor(
     private var disposables = mutableListOf<Disposable>()
     private val wifiDataLD: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     private val loadingStateLD: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    private val informationEventLD: SingleLiveData<Boolean> by lazy { SingleLiveData<Boolean>() }
     val wifiData: LiveData<String> by lazy { wifiDataLD }
     val loadingState: LiveData<Boolean> by lazy { loadingStateLD }
+    val informationEvent: LiveData<Boolean> by lazy { informationEventLD }
 
     override fun attachView(view: MainView?) {
         super.attachView(view)
@@ -106,5 +109,9 @@ class MainPresenter @Inject constructor(
     fun notifyPermissionDenied() {
         isPermissionsGranted = false
         viewState.showError(R.string.error_permission_denied)
+    }
+
+    fun openInformation() {
+        informationEventLD.value = true
     }
 }

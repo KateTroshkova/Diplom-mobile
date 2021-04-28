@@ -9,6 +9,9 @@ import android.content.ServiceConnection
 import android.media.projection.MediaProjection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,6 +21,7 @@ import moxy.presenter.ProvidePresenter
 import nstu.avt716.etroshkova.diplom.R
 import nstu.avt716.etroshkova.diplom.presentation.delegate.PermissionDelegate
 import nstu.avt716.etroshkova.diplom.presentation.delegate.ToastDelegate
+import nstu.avt716.etroshkova.diplom.presentation.information.InformationActivity
 import nstu.avt716.etroshkova.diplom.presentation.service.RecordService
 import toothpick.Toothpick
 
@@ -162,9 +166,26 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settings -> {
+                presenter.openInformation()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun observeState() {
         presenter.wifiData.observe(this, wifiObserver)
         presenter.loadingState.observe(this, loadingObserver)
+        presenter.informationEvent.observe(this, informationObserver)
     }
 
     private val wifiObserver
@@ -175,6 +196,11 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     private val loadingObserver
         get() = Observer<Boolean> {
             loadingView.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
+    private val informationObserver
+        get() = Observer<Boolean> {
+            startActivity(Intent(this, InformationActivity::class.java))
         }
 
     companion object {
