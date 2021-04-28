@@ -16,8 +16,10 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import nstu.avt716.etroshkova.diplom.domain.common.saveImage
 import nstu.avt716.etroshkova.diplom.domain.common.videoPath
+import nstu.avt716.etroshkova.diplom.domain.interactor.PreferencesInteractor
 import nstu.avt716.etroshkova.diplom.presentation.delegate.NotificationDelegate
 import nstu.avt716.etroshkova.diplom.presentation.main.MainActivity
+import toothpick.Toothpick
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
@@ -28,6 +30,9 @@ class RecordService : Service() {
     private var imageReader: ImageReader? = null
     private var timer: Disposable? = null
     private val notificationDelegate by lazy { NotificationDelegate() }
+    private val preferences by lazy {
+        Toothpick.openScopes("App").getInstance(PreferencesInteractor::class.java)
+    }
 
     private var height = 1080
     private var width = 720
@@ -123,7 +128,9 @@ class RecordService : Service() {
 
     private fun initRecorder() {
         mediaRecorder.apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
+            if (preferences.isAudioRecordAllowed()) {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+            }
             setVideoSource(MediaRecorder.VideoSource.SURFACE)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
             setOutputFile(videoPath)

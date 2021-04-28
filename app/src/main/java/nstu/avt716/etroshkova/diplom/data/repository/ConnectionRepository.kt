@@ -10,10 +10,8 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import nstu.avt716.etroshkova.diplom.data.connection.ConnectionSourceFactory
 import nstu.avt716.etroshkova.diplom.domain.api.ConnectionRepositoryApi
-import nstu.avt716.etroshkova.diplom.domain.common.deleteFile
-import nstu.avt716.etroshkova.diplom.domain.common.diplomPath
-import nstu.avt716.etroshkova.diplom.domain.common.textFileName
-import nstu.avt716.etroshkova.diplom.domain.common.writeTextFile
+import nstu.avt716.etroshkova.diplom.domain.api.PreferencesRepositoryApi
+import nstu.avt716.etroshkova.diplom.domain.common.*
 import java.io.File
 import java.math.BigInteger
 import java.net.InetAddress
@@ -24,7 +22,8 @@ import javax.inject.Inject
 
 
 class ConnectionRepository @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val preferencesRepository: PreferencesRepositoryApi
 ) : ConnectionRepositoryApi {
     private val factory: ConnectionSourceFactory? = null
 
@@ -38,6 +37,7 @@ class ConnectionRepository @Inject constructor(
         .fromAction {
             deleteMobileInfo()
             deleteScreenshots()
+            deleteVideo()
         }
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -67,6 +67,12 @@ class ConnectionRepository @Inject constructor(
 
     private fun deleteMobileInfo() {
         deleteFile(File("$diplomPath/$textFileName"))
+    }
+
+    private fun deleteVideo() {
+        if (!preferencesRepository.isSaveVideoAllowed) {
+            deleteFile(File("$diplomPath/$videoPath"))
+        }
     }
 
     private fun deleteScreenshots() {

@@ -76,6 +76,12 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         wifiConnectButton.setOnClickListener {
             presenter.handleIPConnection()
         }
+        audioCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            presenter.allowAudioRecord(isChecked)
+        }
+        videoCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            presenter.allowSaveVideo(isChecked)
+        }
     }
 
     override fun onResume() {
@@ -135,6 +141,14 @@ class MainActivity : MvpAppCompatActivity(), MainView {
             connection,
             Context.BIND_AUTO_CREATE
         )
+    }
+
+    override fun applyAudioSettings(isAudioRecordAllowed: Boolean) {
+        audioCheckBox.isChecked = isAudioRecordAllowed
+    }
+
+    override fun applyVideoSettings(isSaveVideoAllowed: Boolean) {
+        videoCheckBox.isChecked = isSaveVideoAllowed
     }
 
     override fun stopService() {

@@ -8,11 +8,13 @@ import moxy.InjectViewState
 import moxy.MvpPresenter
 import nstu.avt716.etroshkova.diplom.R
 import nstu.avt716.etroshkova.diplom.domain.interactor.ConnectionInteractor
+import nstu.avt716.etroshkova.diplom.domain.interactor.PreferencesInteractor
 import javax.inject.Inject
 
 @InjectViewState
 class MainPresenter @Inject constructor(
-    private val connection: ConnectionInteractor
+    private val connection: ConnectionInteractor,
+    private val preferences: PreferencesInteractor
 ) : MvpPresenter<MainView>() {
 
     private var isPermissionsGranted = false
@@ -21,6 +23,12 @@ class MainPresenter @Inject constructor(
     private val loadingStateLD: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val wifiData: LiveData<String> by lazy { wifiDataLD }
     val loadingState: LiveData<Boolean> by lazy { loadingStateLD }
+
+    override fun attachView(view: MainView?) {
+        super.attachView(view)
+        viewState.applyAudioSettings(preferences.isAudioRecordAllowed())
+        viewState.applyVideoSettings(preferences.isSaveVideoAllowed())
+    }
 
     override fun destroyView(view: MainView?) {
         super.destroyView(view)
@@ -47,6 +55,14 @@ class MainPresenter @Inject constructor(
                     { viewState.showError(R.string.error_wifi) }
                 )
         )
+    }
+
+    fun allowAudioRecord(isAudioRecordAllowed: Boolean) {
+        preferences.allowAudioRecord(isAudioRecordAllowed)
+    }
+
+    fun allowSaveVideo(isSaveVideoAllowed: Boolean) {
+        preferences.allowVideoSave(isSaveVideoAllowed)
     }
 
     fun notifyScreenProjectionGranted(resultCode: Int, data: Intent) {
