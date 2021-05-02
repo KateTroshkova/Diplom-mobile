@@ -6,7 +6,11 @@ interface PreferencesRepositoryApi {
 
     var isSaveVideoAllowed: Boolean
 
+    var fileToSend: String
+
     fun allowAudioRecord(isAudioRecordAllow: Boolean)
 
     fun allowVideoSave(isSaveVideoAllowed: Boolean)
+
+    fun writeFileToSend(filePath: String)
 }

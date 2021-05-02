@@ -11,11 +11,17 @@ class PreferencesInteractor @Inject constructor(
 
     fun isSaveVideoAllowed() = preferencesRepository.isSaveVideoAllowed
 
+    fun getFileToSend() = preferencesRepository.fileToSend
+
     fun allowAudioRecord(isAudioRecordAllow: Boolean) {
         preferencesRepository.allowAudioRecord(isAudioRecordAllow)
     }
 
     fun allowVideoSave(isSaveVideoAllowed: Boolean) {
         preferencesRepository.allowVideoSave(isSaveVideoAllowed)
+    }
+
+    fun writeFileToSend(filePath: String) {
+        preferencesRepository.writeFileToSend(filePath)
     }
 }

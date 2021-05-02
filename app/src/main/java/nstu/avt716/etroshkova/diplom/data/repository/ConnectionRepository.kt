@@ -6,12 +6,14 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import nstu.avt716.etroshkova.diplom.data.connection.ConnectionSourceFactory
 import nstu.avt716.etroshkova.diplom.domain.api.ConnectionRepositoryApi
 import nstu.avt716.etroshkova.diplom.domain.api.PreferencesRepositoryApi
 import nstu.avt716.etroshkova.diplom.domain.common.*
+import nstu.avt716.etroshkova.diplom.domain.model.DeviceInfo
 import java.io.File
 import java.math.BigInteger
 import java.net.InetAddress
@@ -20,18 +22,18 @@ import java.nio.ByteOrder
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
 class ConnectionRepository @Inject constructor(
     private val context: Context,
     private val preferencesRepository: PreferencesRepositoryApi
 ) : ConnectionRepositoryApi {
     private val factory: ConnectionSourceFactory? = null
 
-    override fun connect(): Completable = Completable
-        .fromAction { writeMobileInfo() }
-        .delay(2, TimeUnit.SECONDS)
+    override fun connect(): Completable = Flowable
+        .interval(2, TimeUnit.SECONDS)
+        .doOnNext { writeMobileInfo() }
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .ignoreElements()
 
     override fun disconnect(): Completable = Completable
         .fromAction {
@@ -61,8 +63,17 @@ class ConnectionRepository @Inject constructor(
         .observeOn(AndroidSchedulers.mainThread())
 
     private fun writeMobileInfo() {
-        val info = "${Build.BRAND} ${Build.MODEL} ${Build.DEVICE} ${Build.ID}"
-        writeTextFile(info)
+        val needVideo = preferencesRepository.isSaveVideoAllowed
+        val fileToSend = preferencesRepository.fileToSend
+        val info = DeviceInfo(
+            id = Build.ID,
+            brand = Build.BRAND,
+            model = Build.MODEL,
+            device = Build.DEVICE,
+            isVideoNeeded = needVideo,
+            fileToSend = fileToSend
+        )
+        writeTextFile(info.toJson())
     }
 
     private fun deleteMobileInfo() {

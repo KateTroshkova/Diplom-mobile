@@ -114,4 +114,8 @@ class MainPresenter @Inject constructor(
     fun openInformation() {
         informationEventLD.value = true
     }
+
+    fun sendFile(filePath: String) {
+        preferences.writeFileToSend(filePath)
+    }
 }

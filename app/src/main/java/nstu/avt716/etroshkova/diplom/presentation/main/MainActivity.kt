@@ -9,7 +9,6 @@ import android.content.ServiceConnection
 import android.media.projection.MediaProjection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -214,7 +213,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     private fun showFileChooser() {
         val builder =
             FileChooser.Builder(FileChooser.ChooserType.FILE_CHOOSER, FileChooser.ChooserListener {
-                Log.e("LOG", it)
+                presenter.sendFile(it)
                 fileChooserContainer.visibility = View.GONE
             }
             )
@@ -239,6 +238,5 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     companion object {
         const val RECORD_START_KEY = "1003"
         const val RECORD_STOP_KEY = "1004"
-        const val FILE_REQUEST_CODE = 1005
     }
 }

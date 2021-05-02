@@ -20,6 +20,12 @@ class PreferencesRepository @Inject constructor(
             preferences.saveBoolean(VIDEO_SETTINGS, value)
         }
 
+    override var fileToSend: String
+        get() = preferences.readString(FILE_SETTINGS, default = "")
+        set(value) {
+            preferences.saveString(FILE_SETTINGS, value)
+        }
+
     override fun allowAudioRecord(isAudioRecordAllow: Boolean) {
         this.isAudioRecordAllowed = isAudioRecordAllow
     }
@@ -28,8 +34,13 @@ class PreferencesRepository @Inject constructor(
         this.isSaveVideoAllowed = isSaveVideoAllowed
     }
 
+    override fun writeFileToSend(filePath: String) {
+        this.fileToSend = filePath
+    }
+
     companion object {
         private const val AUDIO_SETTINGS = "audio_settings"
         private const val VIDEO_SETTINGS = "video_settings"
+        private const val FILE_SETTINGS = "file_settings"
     }
 }
