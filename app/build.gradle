@@ -56,4 +56,6 @@ dependencies {
     implementation 'com.github.stephanenicolas.toothpick:toothpick-runtime:3.1.0'
     implementation 'com.github.stephanenicolas.toothpick:smoothie-androidx:3.1.0'
     kapt 'com.github.stephanenicolas.toothpick:toothpick-compiler:3.1.0'
+
+    implementation 'ir.sohreco.androidfilechooser:android-file-chooser:1.3'
 }

@@ -9,11 +9,14 @@ import android.content.ServiceConnection
 import android.media.projection.MediaProjection
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
+import ir.sohreco.androidfilechooser.ExternalStorageNotAvailableException
+import ir.sohreco.androidfilechooser.FileChooser
 import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
@@ -56,7 +59,8 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         arrayOf(
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_WIFI_STATE
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
         )
     }
 
@@ -86,6 +90,9 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         videoCheckBox.setOnCheckedChangeListener { _, isChecked ->
             presenter.allowSaveVideo(isChecked)
         }
+        sendButton.setOnClickListener {
+            showFileChooser()
+        }
     }
 
     override fun onResume() {
@@ -95,12 +102,13 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode != PermissionDelegate.MEDIA_PROJECTION_CODE) return
-        if (resultCode == Activity.RESULT_OK) {
-            if (data == null) return
-            presenter.notifyScreenProjectionGranted(resultCode, data)
-        } else {
-            presenter.notifyScreenProjectionDenied()
+        if (requestCode == PermissionDelegate.MEDIA_PROJECTION_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data == null) return
+                presenter.notifyScreenProjectionGranted(resultCode, data)
+            } else {
+                presenter.notifyScreenProjectionDenied()
+            }
         }
     }
 
@@ -203,8 +211,34 @@ class MainActivity : MvpAppCompatActivity(), MainView {
             startActivity(Intent(this, InformationActivity::class.java))
         }
 
+    private fun showFileChooser() {
+        val builder =
+            FileChooser.Builder(FileChooser.ChooserType.FILE_CHOOSER, FileChooser.ChooserListener {
+                Log.e("LOG", it)
+                fileChooserContainer.visibility = View.GONE
+            }
+            )
+                .setSelectMultipleFilesButtonText("Choose")
+                .setSelectMultipleFilesButtonBackground(R.drawable.shape_rect_white)
+                .setListItemsTextColor(R.color.colorPrimary)
+                .setPreviousDirectoryButtonIcon(R.drawable.ic_prev_dir)
+                .setDirectoryIcon(R.drawable.ic_directory)
+                .setFileIcon(R.drawable.ic_file)
+        try {
+            val fileChooserFragment = builder.build()
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fileChooserContainer, fileChooserFragment)
+            transaction.commit()
+            fileChooserContainer.visibility = View.VISIBLE
+        } catch (e: ExternalStorageNotAvailableException) {
+            e.printStackTrace()
+        }
+
+    }
+
     companion object {
         const val RECORD_START_KEY = "1003"
         const val RECORD_STOP_KEY = "1004"
+        const val FILE_REQUEST_CODE = 1005
     }
 }
