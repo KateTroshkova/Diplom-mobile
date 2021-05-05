@@ -189,6 +189,14 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         }
     }
 
+    override fun onBackPressed() {
+        if (fileChooserContainer.visibility == View.VISIBLE) {
+            fileChooserContainer.visibility = View.GONE
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun observeState() {
         presenter.wifiData.observe(this, wifiObserver)
         presenter.loadingState.observe(this, loadingObserver)
