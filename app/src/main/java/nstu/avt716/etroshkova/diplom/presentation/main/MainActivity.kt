@@ -221,7 +221,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
                 .setSelectMultipleFilesButtonBackground(R.drawable.shape_rect_white)
                 .setListItemsTextColor(R.color.colorPrimary)
                 .setPreviousDirectoryButtonIcon(R.drawable.ic_prev_dir)
-                .setDirectoryIcon(R.drawable.ic_directory)
+                .setDirectoryIcon(R.drawable.ic_folder)
                 .setFileIcon(R.drawable.ic_file)
         try {
             val fileChooserFragment = builder.build()
