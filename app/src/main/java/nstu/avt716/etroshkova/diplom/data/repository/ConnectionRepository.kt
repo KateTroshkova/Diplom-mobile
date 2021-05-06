@@ -28,8 +28,8 @@ class ConnectionRepository @Inject constructor(
 ) : ConnectionRepositoryApi {
     private val factory: ConnectionSourceFactory? = null
 
-    override fun connect(): Completable = Flowable
-        .interval(2, TimeUnit.SECONDS)
+    override fun connect(): Completable = Completable.fromAction { imageIndex = 0 }
+        .andThen(Flowable.interval(2, TimeUnit.SECONDS))
         .doOnNext { writeMobileInfo() }
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
@@ -37,10 +37,13 @@ class ConnectionRepository @Inject constructor(
 
     override fun disconnect(): Completable = Completable
         .fromAction {
+            imageIndex = -1
             deleteMobileInfo()
             deleteScreenshots()
             deleteVideo()
         }
+        .delay(1, TimeUnit.SECONDS)
+        .andThen(Completable.fromAction { deleteScreenshots() })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
@@ -82,7 +85,7 @@ class ConnectionRepository @Inject constructor(
 
     private fun deleteVideo() {
         if (!preferencesRepository.isSaveVideoAllowed) {
-            deleteFile(File("$diplomPath/$videoPath"))
+            deleteFile(File(videoPath))
         }
     }
 

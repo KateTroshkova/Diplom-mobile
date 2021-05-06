@@ -182,10 +182,12 @@ class RecordService : Service() {
             .subscribe {
                 val bitmap = makeScreenshot()
                 bitmap?.let { it1 ->
-                    saveImage(
-                        applicationContext,
-                        it1
-                    )
+                    if (running) {
+                        saveImage(
+                            applicationContext,
+                            it1
+                        )
+                    }
                 }
             }
     }

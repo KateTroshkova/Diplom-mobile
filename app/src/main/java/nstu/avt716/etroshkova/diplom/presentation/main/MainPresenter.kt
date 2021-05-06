@@ -3,7 +3,9 @@ package nstu.avt716.etroshkova.diplom.presentation.main
 import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import nstu.avt716.etroshkova.diplom.R
@@ -35,9 +37,7 @@ class MainPresenter @Inject constructor(
 
     override fun destroyView(view: MainView?) {
         super.destroyView(view)
-        disposables.forEach {
-            it.dispose()
-        }
+        clear()
     }
 
     fun handleUsbConnection() {
@@ -74,8 +74,6 @@ class MainPresenter @Inject constructor(
         disposables.add(
             connection
                 .connect()
-                .doOnSubscribe { loadingStateLD.value = true }
-                .doFinally { loadingStateLD.value = false }
                 .subscribe(
                     {},
                     { viewState.showError(R.string.error_connection) }
@@ -89,9 +87,12 @@ class MainPresenter @Inject constructor(
 
     fun disconnect() {
         viewState.stopService()
+        clear()
         disposables.add(
             connection
                 .disconnect()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { loadingStateLD.value = true }
                 .doFinally { loadingStateLD.value = false }
                 .subscribe(
@@ -117,5 +118,11 @@ class MainPresenter @Inject constructor(
 
     fun sendFile(filePath: String) {
         preferences.writeFileToSend(filePath)
+    }
+
+    private fun clear() {
+        disposables.forEach {
+            it.dispose()
+        }
     }
 }

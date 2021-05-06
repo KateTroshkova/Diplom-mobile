@@ -52,6 +52,7 @@ fun imageUri(context: Context) = context.contentResolver.let { resolver ->
 }
 
 fun saveImage(context: Context, bitmap: Bitmap) {
+    if (imageIndex == -1) return
     val dir = File(diplomPath)
     dir.mkdirs()
     imageIndex++
@@ -71,7 +72,9 @@ fun saveImage(context: Context, bitmap: Bitmap) {
         )
     //}
     fos?.use {
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+        if (imageIndex > 0) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+        }
     }
 }
 
