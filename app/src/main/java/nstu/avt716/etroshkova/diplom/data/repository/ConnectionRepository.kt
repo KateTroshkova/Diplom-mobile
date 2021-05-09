@@ -91,7 +91,7 @@ class ConnectionRepository @Inject constructor(
 
     private fun deleteScreenshots() {
         for (i in 0..20) {
-            deleteFile(File("$diplomPath/screenshot$i.jpg"))
+            deleteFile(File("$diplomPath/screenshot$i.png"))
         }
     }
 }

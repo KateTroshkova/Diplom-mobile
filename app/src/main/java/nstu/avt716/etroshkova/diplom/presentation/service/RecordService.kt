@@ -14,7 +14,6 @@ import android.os.IBinder
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import nstu.avt716.etroshkova.diplom.domain.common.saveImage
 import nstu.avt716.etroshkova.diplom.domain.common.videoPath
 import nstu.avt716.etroshkova.diplom.domain.interactor.PreferencesInteractor
 import nstu.avt716.etroshkova.diplom.presentation.delegate.NotificationDelegate
@@ -182,12 +181,12 @@ class RecordService : Service() {
             .subscribe {
                 val bitmap = makeScreenshot()
                 bitmap?.let { it1 ->
-                    if (running) {
+                    /*if (running) {
                         saveImage(
                             applicationContext,
                             it1
                         )
-                    }
+                    }*/
                 }
             }
     }
