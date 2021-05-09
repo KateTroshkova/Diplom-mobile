@@ -21,6 +21,7 @@ class MainPresenter @Inject constructor(
 ) : MvpPresenter<MainView>() {
 
     private var isPermissionsGranted = false
+    private var isAudioRecordAllowed = false
     private var disposables = mutableListOf<Disposable>()
     private val wifiDataLD: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     private val loadingStateLD: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
@@ -41,11 +42,11 @@ class MainPresenter @Inject constructor(
     }
 
     fun handleUsbConnection() {
-        viewState.requestUSBPermissions()
+        viewState.requestUSBPermissions(isAudioRecordAllowed)
     }
 
     fun handleIPConnection() {
-        viewState.requestWifiPermissions()
+        viewState.requestWifiPermissions(isAudioRecordAllowed)
         disposables.add(
             connection
                 .getConnectedWifiIp()
@@ -62,6 +63,7 @@ class MainPresenter @Inject constructor(
 
     fun allowAudioRecord(isAudioRecordAllowed: Boolean) {
         preferences.allowAudioRecord(isAudioRecordAllowed)
+        this.isAudioRecordAllowed = isAudioRecordAllowed
     }
 
     fun allowSaveVideo(isSaveVideoAllowed: Boolean) {

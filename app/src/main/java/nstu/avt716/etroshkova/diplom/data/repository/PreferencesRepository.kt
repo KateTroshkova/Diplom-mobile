@@ -9,13 +9,13 @@ class PreferencesRepository @Inject constructor(
 ) : BasePreferences(sharedPreferences), PreferencesRepositoryApi {
 
     override var isAudioRecordAllowed: Boolean
-        get() = preferences.readBoolean(AUDIO_SETTINGS, default = true)
+        get() = preferences.readBoolean(AUDIO_SETTINGS, default = false)
         set(value) {
             preferences.saveBoolean(AUDIO_SETTINGS, value)
         }
 
     override var isSaveVideoAllowed: Boolean
-        get() = preferences.readBoolean(VIDEO_SETTINGS, default = true)
+        get() = preferences.readBoolean(VIDEO_SETTINGS, default = false)
         set(value) {
             preferences.saveBoolean(VIDEO_SETTINGS, value)
         }

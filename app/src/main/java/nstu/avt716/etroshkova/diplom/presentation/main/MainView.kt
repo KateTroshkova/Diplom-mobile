@@ -20,10 +20,13 @@ interface MainView : MvpView {
     fun stopService()
 
     @OneExecution
-    fun requestUSBPermissions()
+    fun requestUSBPermissions(isAudioRecordAllowed: Boolean)
 
     @OneExecution
-    fun requestWifiPermissions()
+    fun requestWifiPermissions(isAudioRecordAllowed: Boolean)
+
+    @OneExecution
+    fun requestAudioPermission()
 
     @OneExecution
     fun requestScreenProjection()

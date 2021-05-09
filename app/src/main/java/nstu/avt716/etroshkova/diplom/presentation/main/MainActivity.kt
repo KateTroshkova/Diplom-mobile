@@ -49,17 +49,22 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     private val usbPermissions by lazy {
         arrayOf(
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
         )
     }
 
     private val wifiPermissions by lazy {
         arrayOf(
-            Manifest.permission.RECORD_AUDIO,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_WIFI_STATE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_WIFI_STATE
+        )
+    }
+
+    private val audioPermissions by lazy {
+        arrayOf(
+            Manifest.permission.RECORD_AUDIO
         )
     }
 
@@ -126,12 +131,20 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         }
     }
 
-    override fun requestUSBPermissions() {
-        permissionDelegate.requestPermissions(usbPermissions)
+    override fun requestUSBPermissions(isAudioRecordAllowed: Boolean) {
+        permissionDelegate.requestPermissions(
+            usbPermissions + if (isAudioRecordAllowed) audioPermissions else arrayOf()
+        )
     }
 
-    override fun requestWifiPermissions() {
-        permissionDelegate.requestPermissions(wifiPermissions)
+    override fun requestWifiPermissions(isAudioRecordAllowed: Boolean) {
+        permissionDelegate.requestPermissions(
+            wifiPermissions + if (isAudioRecordAllowed) audioPermissions else arrayOf()
+        )
+    }
+
+    override fun requestAudioPermission() {
+        permissionDelegate.requestPermissions(audioPermissions)
     }
 
     override fun requestScreenProjection() {
