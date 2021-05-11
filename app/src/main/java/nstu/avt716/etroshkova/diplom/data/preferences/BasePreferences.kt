@@ -1,4 +1,4 @@
-package nstu.avt716.etroshkova.diplom.data.repository
+package nstu.avt716.etroshkova.diplom.data.preferences
 
 import android.content.SharedPreferences
 

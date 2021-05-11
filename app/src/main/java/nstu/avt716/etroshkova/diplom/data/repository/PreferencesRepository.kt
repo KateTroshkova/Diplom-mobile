@@ -1,6 +1,7 @@
 package nstu.avt716.etroshkova.diplom.data.repository
 
 import android.content.SharedPreferences
+import nstu.avt716.etroshkova.diplom.data.preferences.BasePreferences
 import nstu.avt716.etroshkova.diplom.domain.api.PreferencesRepositoryApi
 import javax.inject.Inject
 

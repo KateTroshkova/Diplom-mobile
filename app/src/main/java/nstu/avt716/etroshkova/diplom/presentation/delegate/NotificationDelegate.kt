@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import nstu.avt716.etroshkova.diplom.R
 import nstu.avt716.etroshkova.diplom.presentation.main.MainActivity
 
 class NotificationDelegate {
@@ -28,9 +27,16 @@ class NotificationDelegate {
         return NotificationCompat.Builder(context, channelId)
             .setContentTitle(notificationTitle)
             .setContentText(notificationText)
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            //.setSmallIcon(R.drawable.ic_launcher_background)
             .setContentIntent(pendingIntent)
             .build()
+    }
+
+    fun cancelNotification(context: Context, notificationId: Int) {
+        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancel(
+            notificationId
+        )
+        (context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).cancelAll()
     }
 
     private fun createNotificationChannel(

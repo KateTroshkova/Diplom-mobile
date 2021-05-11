@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".presentation.information.InformationActivity"
-            android:label="@string/title_activity_information" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".presentation.main.MainActivity"
             android:theme="@style/AppTheme" />

@@ -11,7 +11,7 @@ import java.io.*
 
 var imageIndex: Int = 0
 
-fun imageFileName(n: Int): String = "screenshot$n.jpg"
+fun imageFileName(n: Int): String = "screenshot$n.png"
 
 val videoFileName: String
     get() = "record1.mp4"
@@ -19,7 +19,8 @@ val videoFileName: String
 val textFileName: String
     get() = "mobile_info.txt"
 
-val galleryPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+val galleryPath: File =
+    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
 
 val diplomPath = "${galleryPath.absolutePath}/diplom"
 
@@ -59,18 +60,18 @@ fun saveImage(context: Context, bitmap: Bitmap) {
     if (imageIndex == 20) {
         imageIndex = 0
     }
-    val fos: OutputStream? = /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    val fos: OutputStream? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         context.contentResolver?.let { resolver ->
             imageUri(context)?.let { resolver.openOutputStream(it, "wt") }
         }
-    } else {*/
+    } else {
         FileOutputStream(
             File(
                 diplomPath,
                 imageFileName(imageIndex)
             )
         )
-    //}
+    }
     fos?.use {
         if (imageIndex > 0) {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
