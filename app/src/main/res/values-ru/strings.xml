@@ -15,4 +15,18 @@
     <string name="error_connection">Невозможно установить соединение</string>
     <string name="error_wifi">Не найдена сеть WiFi</string>
     <string name="info_wifi">Адрес для подключения: %1$s</string>
+    <string name="info_step1">Подсоедините мобильное устройство к ПК с помощью любого кабеля</string>
+    <string name="info_step2">Нажмите \'USB\'</string>
+    <string name="info_step3">Предоставьте нам разрешения</string>
+    <string name="info_step4">Запустите desktop-приложение</string>
+    <string name="info_step5">Нажмите \'USB\'</string>
+    <string name="info_step6">Спасибо, что Вы с нами!</string>
+    <string name="info_step7">Подключите телефон и ПК к одной сети WiFi</string>
+    <string name="info_step8">Нажмите \'WiFi\'</string>
+    <string name="info_step9">Предоставьте нам разрешения</string>
+    <string name="info_step10">Запустите desktop-приложение</string>
+    <string name="info_step11">Нажмите \'WiFi\'</string>
+    <string name="info_step12">Введите IP-адрес сети</string>
+    <string name="info_step13">Нажмите \'Далее\'</string>
+    <string name="info_step14">Спасибо, что Вы с нами!</string>
 </resources>

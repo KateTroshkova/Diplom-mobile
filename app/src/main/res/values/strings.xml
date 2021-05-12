@@ -14,4 +14,18 @@
     <string name="error_connection">Can not connect to desktop</string>
     <string name="error_wifi">WiFi not found</string>
     <string name="info_wifi">Connection address: %1$s</string>
+    <string name="info_step1">Connect your mobile device to your PC using any cable</string>
+    <string name="info_step2">Click \'USB \'</string>
+    <string name="info_step3">Give us permission</string>
+    <string name="info_step4">Run the desktop application</string>
+    <string name="info_step5">Click \'USB \'</string>
+    <string name="info_step6">Thank you for being with us!</string>
+    <string name="info_step7">Connect your phone and PC to the same WiFi network</string>
+    <string name="info_step8">Click \'WiFi \'</string>
+    <string name="info_step9">Give us permission</string>
+    <string name="info_step10">Run the desktop application</string>
+    <string name="info_step11">Click \'WiFi \'</string>
+    <string name="info_step12">Enter the IP address of the network</string>
+    <string name="info_step13">Click \'Next \'</string>
+    <string name="info_step14">Thank you for being with us!</string>
 </resources>

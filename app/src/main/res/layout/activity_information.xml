@@ -1,12 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/usbImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/usbStep6TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/usbStep1TextView"
+            app:srcCompat="@drawable/ic_usb" />
+
+        <TextView
+            android:id="@+id/usbStep1TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/usbStep2TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep1TextView" />
+
+        <TextView
+            android:id="@+id/usbStep3TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep2TextView" />
+
+        <TextView
+            android:id="@+id/usbStep4TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep3TextView" />
+
+        <TextView
+            android:id="@+id/usbStep5TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep4TextView" />
+
+        <TextView
+            android:id="@+id/usbStep6TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep5TextView" />
+
+        <TextView
+            android:id="@+id/usbStep7TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/info_step7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep6TextView" />
+
+        <TextView
+            android:id="@+id/usbStep8TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step8"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep7TextView" />
+
+        <TextView
+            android:id="@+id/usbStep9TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep8TextView" />
+
+        <TextView
+            android:id="@+id/usbStep10TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep9TextView" />
+
+        <TextView
+            android:id="@+id/usbStep11TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep10TextView" />
+
+        <TextView
+            android:id="@+id/usbStep12TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step12"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep11TextView" />
+
+        <TextView
+            android:id="@+id/usbStep13TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep12TextView" />
+
+        <TextView
+            android:id="@+id/usbStep14TextView"
+            style="@style/RegularText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="@string/info_step14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/usbImageView"
+            app:layout_constraintTop_toBottomOf="@id/usbStep13TextView" />
+
+        <ImageView
+            android:id="@+id/wifiImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/usbStep14TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/usbStep7TextView"
+            app:srcCompat="@drawable/ic_wifi" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
