@@ -43,6 +43,7 @@ class ConnectionRepository @Inject constructor(
         }
         .delay(1, TimeUnit.SECONDS)
         .andThen(Completable.fromAction { deleteScreenshots() })
+        .andThen(Completable.fromAction { deleteDirectory() })
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
@@ -93,6 +94,10 @@ class ConnectionRepository @Inject constructor(
         for (i in 0..20) {
             deleteFile(File("$diplomPath/${imageFileName(i)}"))
         }
+    }
+
+    private fun deleteDirectory() {
+        deleteFile(File(diplomPath))
     }
 
     private companion object {

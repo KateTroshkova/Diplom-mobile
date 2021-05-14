@@ -9,6 +9,7 @@ import android.media.MediaRecorder
 import android.media.projection.MediaProjection
 import moxy.InjectViewState
 import moxy.MvpPresenter
+import nstu.avt716.etroshkova.diplom.domain.common.createDirectory
 import nstu.avt716.etroshkova.diplom.domain.common.videoPath
 import nstu.avt716.etroshkova.diplom.domain.interactor.PreferencesInteractor
 import nstu.avt716.etroshkova.diplom.domain.interactor.VideoInteractor
@@ -34,6 +35,7 @@ class RecordPresenter @Inject constructor(
     var projection: MediaProjection? = null
         set(value) {
             field = value
+            createDirectory()
             startRecord()
             initImageReader()
         }
@@ -74,10 +76,13 @@ class RecordPresenter @Inject constructor(
     private fun stopRecord(): Boolean {
         if (!running) return false
         running = false
-        mediaRecorder.stop()
-        mediaRecorder.reset()
-        virtualDisplay?.release()
-        projection?.stop()
+        try {
+            mediaRecorder.stop()
+        } finally {
+            mediaRecorder.reset()
+            virtualDisplay?.release()
+            projection?.stop()
+        }
         return true
     }
 
@@ -116,13 +121,16 @@ class RecordPresenter @Inject constructor(
         mediaRecorder.apply {
             if (preferences.isAudioRecordAllowed()) {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
-                setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
             }
             setVideoSource(MediaRecorder.VideoSource.SURFACE)
             setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
             setOutputFile(videoPath)
             setVideoSize(width, height)
             setVideoEncoder(MediaRecorder.VideoEncoder.H264)
+            if (preferences.isAudioRecordAllowed()) {
+                setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
+                setAudioSamplingRate(16000)
+            }
             setVideoEncodingBitRate(ENCODE_BIT_RATE)
             setVideoFrameRate(FRAME_RATE)
             try {

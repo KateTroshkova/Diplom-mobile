@@ -60,18 +60,18 @@ fun saveImage(context: Context, bitmap: Bitmap) {
     if (imageIndex == 20) {
         imageIndex = 0
     }
-    val fos: OutputStream? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    val fos: OutputStream? = /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         context.contentResolver?.let { resolver ->
             imageUri(context)?.let { resolver.openOutputStream(it, "wt") }
         }
-    } else {
+    } else {*/
         FileOutputStream(
             File(
                 diplomPath,
                 imageFileName(imageIndex)
             )
         )
-    }
+    //}
     fos?.use {
         if (imageIndex > 0) {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
@@ -99,4 +99,9 @@ fun deleteFile(dir: File) {
     if (dir.exists()) {
         dir.delete()
     }
+}
+
+fun createDirectory() {
+    val dir = File(diplomPath)
+    dir.mkdirs()
 }
