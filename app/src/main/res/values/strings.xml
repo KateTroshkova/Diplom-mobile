@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">diplom</string>
+    <string name="app_name">Mirror Shape</string>
     <string name="label_usb">USB</string>
     <string name="label_wifi">WIFI</string>
     <string name="label_ip">IP</string>

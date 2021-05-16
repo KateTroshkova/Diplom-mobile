@@ -36,19 +36,28 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     private var projection: MediaProjection? = null
     private var recordService: RecordService? = null
 
+    private var resultCode: Int? = null
+    private var data: Intent? = null
+
     private val connection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {}
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as RecordService.RecordBinder
             recordService = binder.recordService
-            recordService?.projection = projection
+            resultCode?.let { code ->
+                data?.let { data ->
+                    recordService?.projection =
+                        permissionDelegate.buildMediaProjection(code, data)
+                }
+            }
         }
 
     }
 
     private val usbPermissions by lazy {
         arrayOf(
+            Manifest.permission.FOREGROUND_SERVICE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
         )
@@ -56,6 +65,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     private val wifiPermissions by lazy {
         arrayOf(
+            Manifest.permission.FOREGROUND_SERVICE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_WIFI_STATE
@@ -159,7 +169,9 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         val intent = Intent(this, RecordService::class.java)
         intent.action = RECORD_START_KEY
         startService(intent)
-        projection = permissionDelegate.buildMediaProjection(resultCode, data)
+        this.resultCode = resultCode
+        this.data = data
+        //projection = permissionDelegate.buildMediaProjection(resultCode, data)
         bindService(
             Intent(this, RecordService::class.java),
             connection,
