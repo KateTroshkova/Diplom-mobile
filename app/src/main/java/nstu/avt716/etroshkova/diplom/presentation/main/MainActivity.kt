@@ -21,6 +21,7 @@ import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import nstu.avt716.etroshkova.diplom.R
+import nstu.avt716.etroshkova.diplom.presentation.delegate.AdDelegate
 import nstu.avt716.etroshkova.diplom.presentation.delegate.PermissionDelegate
 import nstu.avt716.etroshkova.diplom.presentation.delegate.ToastDelegate
 import nstu.avt716.etroshkova.diplom.presentation.information.InformationActivity
@@ -30,6 +31,8 @@ import toothpick.Toothpick
 class MainActivity : MvpAppCompatActivity(), MainView {
 
     private val permissionDelegate by lazy { PermissionDelegate(this) }
+
+    private val adDelegate by lazy { AdDelegate(this) }
 
     private val toastDelegate by lazy { ToastDelegate(this) }
 
@@ -193,6 +196,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
             val intent = Intent(this, RecordService::class.java)
             intent.action = RECORD_STOP_KEY
             startService(intent)
+            adDelegate.loadAd()
         } catch (e: Throwable) {
             e.printStackTrace()
         }

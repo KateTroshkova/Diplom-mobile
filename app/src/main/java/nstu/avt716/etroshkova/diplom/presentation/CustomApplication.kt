@@ -3,6 +3,7 @@ package nstu.avt716.etroshkova.diplom.presentation
 import android.app.Application
 import android.os.Build
 import android.os.Process
+import com.google.android.gms.ads.MobileAds
 import moxy.MvpFacade
 import nstu.avt716.etroshkova.diplom.presentation.di.Injector
 import toothpick.Toothpick
@@ -23,6 +24,8 @@ class CustomApplication : Application() {
         appScope.installModules(Injector(applicationContext))
         Toothpick.inject(this, appScope)
         MvpFacade.init()
+
+        MobileAds.initialize(this) {}
     }
 
     private fun isRooted() =
